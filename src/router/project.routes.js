@@ -1,5 +1,6 @@
 import { Layout, List, Item } from "@/views/project";
 import { useAccountStore, useProjectStore } from "@/stores/index.js";
+import { useTestimonialStore } from "@/stores/testimonial.store.js";
 
 const checkIsProjectItemExists = async (to) => {
   const projectStore = useProjectStore();
@@ -11,6 +12,11 @@ const checkIsProjectItemExists = async (to) => {
       name: "project-list",
     };
   }
+};
+
+const getTestimonials = async (to) => {
+  const testimonialStore = useTestimonialStore();
+  await testimonialStore.getAllByProjectSlug(to.params.slug);
 };
 
 const checkIsUserLoggedIn = () => {
@@ -37,7 +43,7 @@ export default {
       path: "/projects/:slug",
       component: Item,
       name: "project-item",
-      beforeEnter: [checkIsProjectItemExists],
+      beforeEnter: [checkIsProjectItemExists, getTestimonials],
     },
   ],
 };

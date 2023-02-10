@@ -9,7 +9,7 @@ export const fetchWrapper = {
 };
 
 function request(method) {
-  return (url, body) => {
+  return (url, body = null) => {
     const requestOptions = {
       method,
       headers: authHeader(url),

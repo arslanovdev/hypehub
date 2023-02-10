@@ -1,3 +1,12 @@
+<script setup>
+  import { storeToRefs } from "pinia";
+  import { useTestimonialStore } from "@/stores/testimonial.store.js";
+  import UserAvatar from "@/components/UserAvatar.vue";
+
+  const testimonialStore = useTestimonialStore();
+  const { testimonials } = storeToRefs(testimonialStore);
+</script>
+
 <template>
   <div class="relative overflow-x-auto">
     <div class="flex items-center justify-between pb-4">
@@ -63,7 +72,9 @@
       <label
         for="table-search"
         class="sr-only"
-      >Search</label>
+      >
+        Поиск
+      </label>
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
@@ -72,11 +83,13 @@
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
-          ><path
-            fill-rule="evenodd"
-            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-            clip-rule="evenodd"
-          /></svg>
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clip-rule="evenodd"
+            />
+          </svg>
         </div>
         <input
           id="table-search-users"
@@ -132,7 +145,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr
+          v-for="(testimonial, index) in testimonials"
+          :key="index"
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
           <td class="w-4 p-4">
             <div class="flex items-center">
               <input
@@ -150,361 +167,27 @@
             scope="row"
             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
           >
-            <img
-              class="w-10 h-10 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-              alt="Jese image"
-            >
+            <!--            <img-->
+            <!--              class="w-10 h-10 rounded-full"-->
+            <!--              src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"-->
+            <!--              alt=""-->
+            <!--            >-->
+            <UserAvatar :name="testimonial.author_name" />
             <div class="pl-3">
               <div class="text-base font-semibold">
-                Neil Sims
+                {{ testimonial.author_name }}
               </div>
             </div>
           </th>
           <td class="px-6 py-4">
-            Взяла в Pedant б/у Iphone 11 в хорошем состоянии, дешевле нового тысяч на 20. Переживала,
-            но в сервисе проверили это оригинальный телефон. Есть потёртости на углах, но это мелочи.
-            Покупкой довольна)
+            {{ testimonial.text }}
           </td>
           <td class="px-6 py-4">
             <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2" />
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex">
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                  />
-                </svg>
-                <span class="sr-only">Редактировать</span>
-              </button>
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                  />
-                </svg>
-                <span class="sr-only">Удалить</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-table-search-2"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              >
-              <label
-                for="checkbox-table-search-2"
-                class="sr-only"
-              >checkbox</label>
-            </div>
-          </td>
-          <th
-            scope="row"
-            class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            <img
-              class="w-10 h-10 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-              alt="Jese image"
-            >
-            <div class="pl-3">
-              <div class="text-base font-semibold">
-                Bonnie Green
-              </div>
-            </div>
-          </th>
-          <td class="px-6 py-4">
-            Designer
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2" />
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex">
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                  />
-                </svg>
-                <span class="sr-only">Редактировать</span>
-              </button>
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                  />
-                </svg>
-                <span class="sr-only">Удалить</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-table-search-2"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              >
-              <label
-                for="checkbox-table-search-2"
-                class="sr-only"
-              >checkbox</label>
-            </div>
-          </td>
-          <th
-            scope="row"
-            class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            <img
-              class="w-10 h-10 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-              alt="Jese image"
-            >
-            <div class="pl-3">
-              <div class="text-base font-semibold">
-                Jese Leos
-              </div>
-            </div>
-          </th>
-          <td class="px-6 py-4">
-            Vue JS Developer
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2" />
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex">
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                  />
-                </svg>
-                <span class="sr-only">Редактировать</span>
-              </button>
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                  />
-                </svg>
-                <span class="sr-only">Удалить</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-table-search-2"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              >
-              <label
-                for="checkbox-table-search-2"
-                class="sr-only"
-              >checkbox</label>
-            </div>
-          </td>
-          <th
-            scope="row"
-            class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            <img
-              class="w-10 h-10 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              alt="Jese image"
-            >
-            <div class="pl-3">
-              <div class="text-base font-semibold">
-                Thomas Lean
-              </div>
-            </div>
-          </th>
-          <td class="px-6 py-4">
-            UI/UX Engineer
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2" />
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex">
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                  />
-                </svg>
-                <span class="sr-only">Редактировать</span>
-              </button>
-              <button
-                class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                  />
-                </svg>
-                <span class="sr-only">Удалить</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-table-search-3"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              >
-              <label
-                for="checkbox-table-search-3"
-                class="sr-only"
-              >checkbox</label>
-            </div>
-          </td>
-          <th
-            scope="row"
-            class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            <img
-              class="w-10 h-10 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
-              alt="Jese image"
-            >
-            <div class="pl-3">
-              <div class="text-base font-semibold">
-                Leslie Livingston
-              </div>
-            </div>
-          </th>
-          <td class="px-6 py-4">
-            SEO Specialist
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2" />
+              <div
+                class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"
+                :class="{ 'bg-red-400': !testimonial.is_verified }"
+              />
             </div>
           </td>
           <td class="px-6 py-4">
