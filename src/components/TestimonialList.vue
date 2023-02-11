@@ -178,8 +178,8 @@
                 v-else
                 :name="testimonial.author_name"
               />
-              <div class="pl-3">
-                <div class="text-base font-semibold">
+              <div class="pl-3 max-w-[150px]">
+                <div class="text-base font-semibold truncate">
                   {{ testimonial.author_name }}
                 </div>
               </div>
