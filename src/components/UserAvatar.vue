@@ -16,7 +16,7 @@ const initials = computed(() => {
 </script>
 
 <template>
-  <div class="inline-flex cursor-pointer ml-2 sm:ml-4 overflow-hidden relative justify-center items-center w-9 h-9 bg-blue-200 rounded-full dark:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+  <div class="inline-flex overflow-hidden relative justify-center items-center w-9 h-9 bg-blue-200 rounded-full dark:bg-blue-700">
     <span class="font-medium text-gray-600 dark:text-gray-300">
       {{ initials }}
     </span>

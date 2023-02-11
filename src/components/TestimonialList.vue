@@ -165,17 +165,23 @@
           </td>
           <th
             scope="row"
-            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+            class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
           >
-            <!--            <img-->
-            <!--              class="w-10 h-10 rounded-full"-->
-            <!--              src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"-->
-            <!--              alt=""-->
-            <!--            >-->
-            <UserAvatar :name="testimonial.author_name" />
-            <div class="pl-3">
-              <div class="text-base font-semibold">
-                {{ testimonial.author_name }}
+            <div class="flex items-center">
+              <img
+                v-if="testimonial.author_photo"
+                class="w-9 h-9 rounded-full"
+                :src="testimonial.author_photo"
+                alt=""
+              >
+              <UserAvatar
+                v-else
+                :name="testimonial.author_name"
+              />
+              <div class="pl-3">
+                <div class="text-base font-semibold">
+                  {{ testimonial.author_name }}
+                </div>
               </div>
             </div>
           </th>
