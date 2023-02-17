@@ -1,7 +1,10 @@
 <script setup>
+import { ref } from "vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
 import UserMenu from "./UserMenu.vue";
 import Logo from "./Logo.vue";
+
+const isMobileNavbarHidden = ref(true)
 </script>
 
 <template>
@@ -25,10 +28,11 @@ import Logo from "./Logo.vue";
           data-collapse-toggle="navbar-sticky"
           type="button"
           class="inline-flex ml-2 sm:ml-4 items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="sidebar"
+          aria-controls="navbar-sticky"
           aria-expanded="false"
+          @click="isMobileNavbarHidden = !isMobileNavbarHidden"
         >
-          <span class="sr-only">Открыть главое меню</span>
+          <span class="sr-only">Открыть главное меню</span>
           <svg
             class="w-6 h-6"
             aria-hidden="true"
@@ -46,7 +50,8 @@ import Logo from "./Logo.vue";
       </div>
       <div
         id="navbar-sticky"
-        class="items-center justify-between hidden min-w-full sm:min-w-0 md:flex md:w-auto md:order-1 flex-1 md:justify-end"
+        :class="{ hidden: isMobileNavbarHidden }"
+        class="items-center justify-between min-w-full sm:min-w-0 md:flex md:w-auto md:order-1 flex-1 md:justify-end"
       >
         <ul
           class="flex flex-col mt-4 md:mr-2 md:flex-row md:space-x-8 md:mt-0 md:text-sm font-semibold"
