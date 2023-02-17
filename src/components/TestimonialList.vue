@@ -1,10 +1,21 @@
 <script setup>
+  // Import modules
   import { storeToRefs } from "pinia";
   import { useTestimonialStore } from "@/stores/testimonial.store.js";
+  import { ref, watch } from "vue";
   import UserAvatar from "@/components/UserAvatar.vue";
+  import SearchInput from "@/components/SearchInput.vue";
+  import { router } from "@/router";
 
+  // Get testimonials from the store and initialize search query
   const testimonialStore = useTestimonialStore();
   const { testimonials } = storeToRefs(testimonialStore);
+  const searchQuery = ref("");
+
+  // Filter testimonials based on search query
+  watch(searchQuery, async (searchQuery) => {
+    await testimonialStore.getAllByProjectSlug(router.currentRoute.value.params.slug, searchQuery);
+  })
 </script>
 
 <template>
@@ -91,15 +102,16 @@
             />
           </svg>
         </div>
-        <input
-          id="table-search-users"
-          type="text"
-          class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        <SearchInput
+          v-model="searchQuery"
           placeholder="Поиск отзыва..."
-        >
+        />
       </div>
     </div>
-    <table class="rounded-lg overflow-hidden w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md sm:rounded-lg bg-white dark:bg-gray-900">
+    <table
+      v-if="!testimonials.loading"
+      class="rounded-lg overflow-hidden w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md sm:rounded-lg bg-white dark:bg-gray-900"
+    >
       <thead class="text-xs text-gray-700 uppercase bg-gray dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th

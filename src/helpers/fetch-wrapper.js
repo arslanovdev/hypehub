@@ -1,6 +1,7 @@
 import { useAccountStore } from "@/stores";
 import { CONFIG } from "@/config.js";
 
+// Initialize the fetch methods
 export const fetchWrapper = {
   get: request("GET"),
   post: request("POST"),
@@ -8,45 +9,56 @@ export const fetchWrapper = {
   delete: request("DELETE"),
 };
 
+// Create the request function
 function request(method) {
-  return (url, body = null) => {
+  return async (url, params = null) => {
+    // Initialize request options
     const requestOptions = {
       method,
-      headers: authHeader(url),
+      headers: {
+        ...authHeader(url),
+        Accept: "application/json"
+      }
     };
-    requestOptions.headers["Accept"] = "application/json";
-    if (body) {
+
+    // Add request body or URL parameters, depending on method
+    if (params && method === "GET") {
+      const queryString = new URLSearchParams(params).toString();
+      url += `?${queryString}`;
+    } else if (params) {
       requestOptions.headers["Content-Type"] = "application/json";
-      requestOptions.body = JSON.stringify(body);
+      requestOptions.body = JSON.stringify(params);
     }
-    return fetch(url, requestOptions).then(handleResponse);
+
+    // Send request and handle response
+    const response = await fetch(url, requestOptions);
+    return await handleResponse(response);
   };
 }
 
-// helper functions
-
+// Get the auth header for the request
 function authHeader(url) {
-  // return auth header with jwt if user is logged in and request is to the api url
   const { token } = useAccountStore();
   const isLoggedIn = !!token;
   const isApiUrl = url.startsWith(CONFIG.API_HOST);
 
+  const authHeader = {};
   if (isLoggedIn && isApiUrl) {
-    return { Authorization: `Bearer ${token}` };
-  } else {
-    return {};
+    authHeader.Authorization = `Bearer ${token}`;
   }
+
+  return authHeader;
 }
 
+// Handle the response from the server
 async function handleResponse(response) {
+  const { user, logout } = useAccountStore();
   const isJson = response.headers
     ?.get("content-type")
     ?.includes("application/json");
   const data = isJson ? await response.json() : null;
 
-  // check for error response
   if (!response.ok) {
-    const { user, logout } = useAccountStore();
     if ([401, 403].includes(response.status) && user) {
       // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
       logout();
