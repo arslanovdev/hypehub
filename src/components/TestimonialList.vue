@@ -1,5 +1,5 @@
 <script setup>
-  // Import modules
+  import { Modal, Button } from "flowbite-vue";
   import { storeToRefs } from "pinia";
   import { useTestimonialStore } from "@/stores/testimonial.store.js";
   import { ref, watch } from "vue";
@@ -9,13 +9,26 @@
 
   // Get testimonials from the store and initialize search query
   const testimonialStore = useTestimonialStore();
-  const { testimonials } = storeToRefs(testimonialStore);
+  const { selectedTestimonial, testimonials } = storeToRefs(testimonialStore);
   const searchQuery = ref("");
 
   // Filter testimonials based on search query
   watch(searchQuery, async (searchQuery) => {
-    await testimonialStore.getAllByProjectSlug(router.currentRoute.value.params.slug, searchQuery);
+    const projectSlug = router.currentRoute.value.params.slug;
+    await testimonialStore.getAllByProjectSlug(projectSlug, searchQuery);
   })
+
+  // Delete modal methods
+  const isShowDeleteModal = ref(false);
+  const deleteTestimonial = () => {
+    console.log(selectedTestimonial.value)
+    testimonialStore.deleteById(selectedTestimonial.value.id);
+  };
+  const closeDeleteModal = () => {
+    isShowDeleteModal.value = false;
+    // Remove testimonial selection
+    selectedTestimonial.value = null
+  };
 </script>
 
 <template>
@@ -234,6 +247,7 @@
               <button
                 class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
                 type="button"
+                @click="selectedTestimonial = testimonial; isShowDeleteModal = true"
               >
                 <svg
                   class="w-5 h-5"
@@ -258,4 +272,36 @@
       </tbody>
     </table>
   </div>
+
+  <Teleport to="body">
+    <!-- Delete project modal -->
+    <Modal
+      v-if="isShowDeleteModal"
+      size="md"
+      @close="closeDeleteModal"
+    >
+      <template #header>
+        <div class="text-xl font-medium text-gray-900 dark:text-white">
+          Вы уверены что хотите удалить этот отзыв?
+        </div>
+      </template>
+      <template #body>
+        <form class="grid grid-cols-2 gap-2">
+          <Button
+            color="alternative"
+            @click="closeDeleteModal"
+          >
+            Отменить
+          </Button>
+          <Button
+            type="button"
+            color="red"
+            @click="deleteTestimonial(); closeDeleteModal()"
+          >
+            Да
+          </Button>
+        </form>
+      </template>
+    </Modal>
+  </Teleport>
 </template>
