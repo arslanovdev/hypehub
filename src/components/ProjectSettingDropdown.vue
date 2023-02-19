@@ -6,6 +6,7 @@ import {
   Modal,
   Button,
 } from "flowbite-vue";
+import DeleteModal from "@/components/DeleteModal.vue"
 import { ref } from "vue";
 import * as Yup from "yup";
 import { Form, Field } from "vee-validate";
@@ -41,6 +42,7 @@ function closeEditModal() {
 function showEditModal() {
   isShowEditModal.value = true;
 }
+
 const editSchema = Yup.object().shape({
   name: Yup.string()
     .required("Название обязательно")
@@ -49,6 +51,7 @@ const editSchema = Yup.object().shape({
     .required("URL обязателен")
     .max(50, "Фамилия должна быть не длинее 20 символов"),
 });
+
 async function onEditSubmit(values) {
   const alertStore = useAlertStore();
 
@@ -143,34 +146,12 @@ async function onEditSubmit(values) {
 
   <Teleport to="body">
     <!-- Delete project modal -->
-    <Modal
+    <DeleteModal
       v-if="isShowDeleteModal"
-      size="md"
-      @close="closeDeleteModal"
-    >
-      <template #header>
-        <div class="text-xl font-medium text-gray-900 dark:text-white">
-          Вы уверены что хотите удалить проект «{{ project.name }}»?
-        </div>
-      </template>
-      <template #body>
-        <form class="grid grid-cols-2 gap-2">
-          <Button
-            color="alternative"
-            @click="closeDeleteModal"
-          >
-            Отменить
-          </Button>
-          <Button
-            type="button"
-            color="red"
-            @click="deleteProject"
-          >
-            Да
-          </Button>
-        </form>
-      </template>
-    </Modal>
+      :title="`Вы уверены что хотите удалить проект «${ project.name }»?`"
+      @on-close-modal="closeDeleteModal"
+      @on-click-delete-button="deleteProject"
+    />
 
     <!-- Edit project modal -->
     <Modal

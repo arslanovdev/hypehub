@@ -1,10 +1,10 @@
 <script setup>
-  import { Modal, Button } from "flowbite-vue";
   import { storeToRefs } from "pinia";
   import { useTestimonialStore } from "@/stores/testimonial.store.js";
   import { ref, watch } from "vue";
   import UserAvatar from "@/components/UserAvatar.vue";
   import SearchInput from "@/components/SearchInput.vue";
+  import DeleteModal from "@/components/DeleteModal.vue"
   import { router } from "@/router";
 
   // Get testimonials from the store and initialize search query
@@ -21,7 +21,6 @@
   // Delete modal methods
   const isShowDeleteModal = ref(false);
   const deleteTestimonial = () => {
-    console.log(selectedTestimonial.value)
     testimonialStore.deleteById(selectedTestimonial.value.id);
   };
   const closeDeleteModal = () => {
@@ -275,33 +274,11 @@
 
   <Teleport to="body">
     <!-- Delete project modal -->
-    <Modal
+    <DeleteModal
       v-if="isShowDeleteModal"
-      size="md"
-      @close="closeDeleteModal"
-    >
-      <template #header>
-        <div class="text-xl font-medium text-gray-900 dark:text-white">
-          Вы уверены что хотите удалить этот отзыв?
-        </div>
-      </template>
-      <template #body>
-        <form class="grid grid-cols-2 gap-2">
-          <Button
-            color="alternative"
-            @click="closeDeleteModal"
-          >
-            Отменить
-          </Button>
-          <Button
-            type="button"
-            color="red"
-            @click="deleteTestimonial(); closeDeleteModal()"
-          >
-            Да
-          </Button>
-        </form>
-      </template>
-    </Modal>
+      title="Вы уверены что хотите удалить этот отзыв?"
+      @on-close-modal="closeDeleteModal"
+      @on-click-delete-button="deleteTestimonial"
+    />
   </Teleport>
 </template>
