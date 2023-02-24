@@ -45,11 +45,11 @@ function showEditModal() {
 
 const editSchema = Yup.object().shape({
   name: Yup.string()
-    .required("Название обязательно")
-    .max(50, "Название должно быть не длинее 40 символов"),
+    .required("Название проекта обязательно")
+    .max(40, "Название проекта должно быть не длинее 40 символов"),
   slug: Yup.string()
-    .required("URL обязателен")
-    .max(50, "Фамилия должна быть не длинее 20 символов"),
+    .required("Адрес страницы обязателен")
+    .max(20, "Адрес страницы должен быть не длинее 20 символов"),
 });
 
 async function onEditSubmit(values) {
@@ -184,11 +184,17 @@ async function onEditSubmit(values) {
               type="text"
               name="name"
               :class="{ [failedValidationClasses]: errors.name }"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="Например, OpenAI"
               :value="project.name"
               required
             />
+            <p
+              v-if="errors.name"
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              {{ errors.name }}
+            </p>
           </div>
           <div>
             <label
@@ -198,8 +204,11 @@ async function onEditSubmit(values) {
             >
               URL
             </label>
-            <div class="flex">
+            <div
+              class="flex"
+            >
               <span
+                :class="{ [failedValidationClasses]: errors.slug }"
                 class="inline-flex items-center px-3 text-sm text-gray-900 border border-r-0 border-gray-300 rounded-l-md bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
               >
                 hypehub.ru/r/
@@ -209,12 +218,18 @@ async function onEditSubmit(values) {
                 type="text"
                 name="slug"
                 :class="{ [failedValidationClasses]: errors.slug }"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-50 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder="open-ai"
                 :value="project.slug"
                 required
               />
             </div>
+            <p
+              v-if="errors.slug"
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              {{ errors.slug }}
+            </p>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <Button
