@@ -18,9 +18,9 @@ const projectStore = useProjectStore();
 const { project } = storeToRefs(projectStore);
 
 const failedValidationClasses =
-  "bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 " +
-  "focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
-  "dark:focus:border-red-500";
+    "bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 " +
+    "focus:border-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
+    "dark:focus:border-red-500";
 
 // Delete modal
 const isShowDeleteModal = ref(false);
@@ -218,7 +218,7 @@ async function onEditSubmit(values) {
                 type="text"
                 name="slug"
                 :class="{ [failedValidationClasses]: errors.slug }"
-                class="bg-gray-50 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="lowercase bg-gray-50 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder="open-ai"
                 :value="project.slug"
                 required

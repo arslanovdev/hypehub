@@ -20,11 +20,11 @@ const { projects } = storeToRefs(projectStore);
 
 const schema = Yup.object().shape({
   name: Yup.string()
-    .required("Название обязательно")
-    .max(50, "Название должно быть не длинее 40 символов"),
+      .required("Название проекта обязательно")
+      .max(40, "Название проекта должно быть не длинее 40 символов"),
   slug: Yup.string()
-    .required("url обязателен")
-    .max(50, "Фамилия должна быть не длинее 20 символов"),
+      .required("Адрес страницы обязателен")
+      .max(20, "Адрес страницы должен быть не длинее 20 символов"),
 });
 
 async function onSubmit(values) {
@@ -38,9 +38,9 @@ async function onSubmit(values) {
   }
 }
 const failedValidationClasses =
-  "bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 " +
-  "focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
-  "dark:focus:border-red-500";
+    "bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 " +
+    "focus:border-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
+    "dark:focus:border-red-500";
 </script>
 
 <template>
@@ -96,6 +96,7 @@ const failedValidationClasses =
           <div>
             <label
               for="project-name"
+              :class="{ 'text-red-700 dark:text-red-500': errors.name }"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Название
@@ -104,8 +105,8 @@ const failedValidationClasses =
               id="name"
               type="text"
               name="name"
-              :class="{ [failedValidationClasses]: errors.slug }"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              :class="{ [failedValidationClasses]: errors.name }"
+              class="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="Например, OpenAI"
               required
             />
@@ -119,12 +120,14 @@ const failedValidationClasses =
           <div>
             <label
               for="project-url"
+              :class="{ 'text-red-700 dark:text-red-500': errors.slug }"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               URL
             </label>
             <div class="flex">
               <span
+                :class="{ [failedValidationClasses]: errors.slug }"
                 class="inline-flex items-center px-3 text-sm text-gray-900 border border-r-0 border-gray-300 rounded-l-md bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
               >
                 hypehub.ru/r/
@@ -134,7 +137,7 @@ const failedValidationClasses =
                 type="text"
                 name="slug"
                 :class="{ [failedValidationClasses]: errors.slug }"
-                class="lowercase bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                class="lowercase bg-gray-50 text-gray-900 text-sm rounded-none rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder="open-ai"
                 required
               />

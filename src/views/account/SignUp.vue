@@ -39,9 +39,9 @@ async function onSubmit(values) {
 }
 
 const failedValidationClasses =
-  "bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 " +
-  "focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
-  "dark:focus:border-red-500";
+    "bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 " +
+    "focus:border-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
+    "dark:focus:border-red-500";
 </script>
 
 <template>
