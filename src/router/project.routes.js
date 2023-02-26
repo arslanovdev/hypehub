@@ -1,6 +1,5 @@
 import { Layout, List, Item } from "@/views/project";
-import { useAccountStore, useProjectStore } from "@/stores/index.js";
-import { useTestimonialStore } from "@/stores/testimonial.store.js";
+import { useAccountStore, useProjectStore, useTestimonialStore } from "@/stores/index.js";
 
 const checkIsProjectItemExists = async (to) => {
   const projectStore = useProjectStore();
@@ -16,7 +15,7 @@ const checkIsProjectItemExists = async (to) => {
 
 const getTestimonials = async (to) => {
   const testimonialStore = useTestimonialStore();
-  await testimonialStore.getAllByProjectSlug(to.params.slug);
+  await testimonialStore.getAll(to.params.slug);
 };
 
 const checkIsUserLoggedIn = () => {
