@@ -10,13 +10,12 @@ export const useTestimonialStore = defineStore({
 
   state: () => ({
     testimonials: null,
-    testimonial: null,
-    selectedTestimonial: null,
+    selectedTestimonial: null
   }),
 
   actions: {
-    // Get all testimonials
-    async getAllByProjectSlug(projectSlug, searchQuery = null) {
+    // Get all testimonials by project slug
+    async getAll(projectSlug, searchQuery = null) {
       // Set loading state
       this.testimonials = { loading: true };
 
@@ -33,7 +32,8 @@ export const useTestimonialStore = defineStore({
       }
     },
 
-    async deleteById(id) {
+    // Delete testimonial by id
+    async delete(id) {
       const alertStore = useAlertStore();
 
       try {
@@ -45,6 +45,24 @@ export const useTestimonialStore = defineStore({
 
         // Display success message
         alertStore.success("Отзыв удален");
+      } catch (error) {
+        // Handle errors
+        alertStore.error(error);
+      }
+    },
+
+    // Update an existing testimonial
+    async update(id, params) {
+      const alertStore = useAlertStore();
+
+      try {
+        await fetchWrapper.put(`${API_URL}/testimonials/${id}`, params);
+
+        // Update state after deletion
+        this.testimonials = this.testimonials.map((item) => {
+            return id === item.id ? params : item
+        });
+        alertStore.success("Отзыв обновлен");
       } catch (error) {
         // Handle errors
         alertStore.error(error);

@@ -1,6 +1,6 @@
 <script setup>
   import { storeToRefs } from "pinia";
-  import { useTestimonialStore } from "@/stores/testimonial.store.js";
+  import { useTestimonialStore } from "@/stores/index.js";
   import { ref, watch } from "vue";
   import UserAvatar from "@/components/UserAvatar.vue";
   import SearchInput from "@/components/SearchInput.vue";
@@ -22,7 +22,7 @@
   // Delete modal methods
   const isShowDeleteModal = ref(false);
   const deleteTestimonial = () => {
-    testimonialStore.deleteById(selectedTestimonial.value.id);
+    testimonialStore.delete(selectedTestimonial.value.id);
   };
   const closeDeleteModal = () => {
     isShowDeleteModal.value = false;
