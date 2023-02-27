@@ -1,14 +1,17 @@
 <script setup>
-import { Button } from "flowbite-vue";
+import { Spinner, Button } from "flowbite-vue";
 import PageTitle from "@/components/PageTitle.vue";
 import PageDescriptor from "@/components/PageDescriptor.vue";
 import ProjectSettingDropdown from "@/components/ProjectSettingDropdown.vue";
-import { useProjectStore } from "@/stores/index.js";
+import {useProjectStore, useTestimonialStore} from "@/stores/index.js";
 import { storeToRefs } from "pinia";
 import TestimonialList from "@/components/TestimonialList.vue";
 
 const projectStore = useProjectStore();
 const { project } = storeToRefs(projectStore);
+
+const testimonialStore = useTestimonialStore();
+const { testimonials } = storeToRefs(testimonialStore);
 </script>
 
 <template>
@@ -52,5 +55,19 @@ const { project } = storeToRefs(projectStore);
       Импортировать
     </Button>
   </div>
-  <TestimonialList />
+  <Spinner
+    v-if="testimonials.loading"
+    class="mx-auto"
+    color="blue"
+    size="12"
+  />
+  <div
+    v-if="!testimonials.length"
+    class="text-center"
+  >
+    <p class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+      Отзывов пока нет 😞
+    </p>
+  </div>
+  <TestimonialList v-else />
 </template>
