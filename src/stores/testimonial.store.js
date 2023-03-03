@@ -80,7 +80,7 @@ export const useTestimonialStore = defineStore({
       try {
         await fetchWrapper.put(`${API_URL}/testimonials/${id}`, params);
 
-        // Update state after deletion
+        // Update state
         this.testimonials = this.testimonials.map((item) => {
             return id === item.id ? params : item
         });
@@ -90,5 +90,19 @@ export const useTestimonialStore = defineStore({
         alertStore.error(error);
       }
     },
+
+    // Update testimonials by array of ids
+    async updateAll(projectSlug, ids, params) {
+      const alertStore = useAlertStore();
+      params['testimonial_ids'] = ids
+
+      try {
+        this.testimonials = await fetchWrapper.put(`${API_URL}/projects/${projectSlug}/testimonials`, params);
+        alertStore.success("Отзывы обновлены");
+      } catch (error) {
+        // Handle errors
+        alertStore.error(error);
+      }
+    }
   },
 });
