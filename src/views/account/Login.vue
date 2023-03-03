@@ -1,19 +1,33 @@
 <script setup>
 import { Button } from "flowbite-vue";
 import { Form, Field } from "vee-validate";
-import { useAccountStore } from "@/stores";
 import * as Yup from "yup";
 import PageTitle from "@/components/PageTitle.vue";
+import { VueRecaptcha } from 'vue-recaptcha';
+import { ref } from "vue";
+import {useAccountStore, useAlertStore} from "@/stores/index.js";
+import { useDark } from "@vueuse/core";
+const isDark = useDark();
 
 const schema = Yup.object().shape({
   email: Yup.string().required(),
   password: Yup.string().required(),
   remember: Yup.bool(),
 });
+
+const recaptcha = ref()
+
 async function onSubmit(values) {
   const accountStore = useAccountStore();
   const { email, password, remember } = values;
-  await accountStore.login(email, password, remember);
+
+  try {
+    recaptcha.value.execute()
+    await accountStore.login(email, password, remember);
+  } catch (error) {
+    recaptcha.value.reset()
+    useAlertStore().error(error);
+  }
 }
 
 const failedValidationClasses =
@@ -96,6 +110,12 @@ const failedValidationClasses =
         Забыли пароль?
       </router-link>
     </div>
+    <VueRecaptcha
+      ref="recaptcha"
+      size="invisible"
+      :theme="isDark ? 'dark' : 'light'"
+      sitekey="6LcAKc4kAAAAAEhgc-J2Coqaa1VC1D7VgYS_dZdJ"
+    />
     <Button
       :disabled="isSubmitting"
       :loading="isSubmitting"

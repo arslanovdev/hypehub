@@ -26,26 +26,21 @@ export const useAccountStore = defineStore({
       }
     },
     async login(email, password, remember) {
-      try {
-        const response = await fetchWrapper.post(`${apiUrl}/login`, {
-          email,
-          password,
-          remember,
-        });
-        // update pinia state
-        this.user = response.user;
-        this.token = response.token;
+      const response = await fetchWrapper.post(`${apiUrl}/login`, {
+        email,
+        password,
+        remember,
+      });
+      // update pinia state
+      this.user = response.user;
+      this.token = response.token;
 
-        // store user details and jwt in local storage to keep user logged in between page refreshes
-        localStorage.setItem("user", JSON.stringify(response.user));
-        localStorage.setItem("token", JSON.stringify(response.token));
+      // store user details and jwt in local storage to keep user logged in between page refreshes
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("token", JSON.stringify(response.token));
 
-        // redirect to main page
-        await router.push({ name: "project-list" });
-      } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(error);
-      }
+      // redirect to main page
+      await router.push({ name: "project-list" });
     },
     async logout() {
       try {
