@@ -51,6 +51,28 @@ export const useTestimonialStore = defineStore({
       }
     },
 
+    // Delete testimonials by array of ids
+    async deleteAll(projectSlug, ids) {
+      const alertStore = useAlertStore();
+
+      try {
+        // Prepare payload
+        const params = { 'testimonial_ids': ids }
+
+        // Make API request
+        await fetchWrapper.delete(`${API_URL}/projects/${projectSlug}/testimonials`, params);
+
+        // Update state after deletion
+        this.testimonials = this.testimonials.filter((testimonial) => !ids.includes(testimonial.id));
+
+        // Display success message
+        alertStore.success("Отзывы удалены");
+      } catch (error) {
+        // Handle errors
+        alertStore.error(error);
+      }
+    },
+
     // Update an existing testimonial
     async update(id, params) {
       const alertStore = useAlertStore();

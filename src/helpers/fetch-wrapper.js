@@ -52,7 +52,7 @@ function authHeader(url) {
 
 // Handle the response from the server
 async function handleResponse(response) {
-  const { user, logout } = useAccountStore();
+  const { user } = useAccountStore();
   const isJson = response.headers
     ?.get("content-type")
     ?.includes("application/json");
@@ -61,7 +61,7 @@ async function handleResponse(response) {
   if (!response.ok) {
     if ([401, 403].includes(response.status) && user) {
       // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-      logout();
+      // logout();
     }
 
     // get error message from body or default to response status
