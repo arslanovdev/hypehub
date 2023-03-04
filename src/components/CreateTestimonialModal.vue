@@ -4,6 +4,9 @@ import {Form, Field} from "vee-validate";
 import * as Yup from "yup";
 import {useAlertStore, useTestimonialStore} from "@/stores/index.js";
 import {router} from "@/router/index.js";
+import VueTailwindDatepicker from 'vue-tailwind-datepicker'
+import {ref} from "vue";
+import dayjs from "dayjs";
 
 const emit = defineEmits({
   onCloseModal: null,
@@ -13,6 +16,9 @@ const failedValidationClasses =
     "bg-red-50 border-red-500 placeholder-red-700 focus:ring-red-500 " +
     "focus:border-red-500 dark:placeholder-red-500 dark:border-red-500 dark:focus:ring-red-500 " +
     "dark:focus:border-red-500";
+
+const dateValue = ref(dayjs().format('YYYY-MM-DD HH:mm:ss'))
+const disabledDays = (date) => date > new Date();
 
 const schema = Yup.object().shape({
   author_name: Yup.string()
@@ -104,10 +110,18 @@ async function onSubmit(values) {
               {{ errors.text }}
             </p>
           </div>
+          <VueTailwindDatepicker
+            placeholder="Укажите дату"
+            i18n="ru"
+            :disable-date="disabledDays"
+            input-classes="pr-12 bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:placeholder-gray-400 dark:text-white"
+            as-single
+          />
           <div class="flex sm:col-span-2">
             <div class="flex items-center h-5">
               <Field
                 id="is_verified"
+                v-model="dateValue"
                 aria-describedby="is_verified"
                 type="checkbox"
                 name="is_verified"
