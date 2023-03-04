@@ -107,12 +107,23 @@ export const useTestimonialStore = defineStore({
     },
 
     // Update testimonials by array of ids
-    async updateAll(projectSlug, ids, params) {
+    async updateAll(projectSlug, ids, values) {
       const alertStore = useAlertStore();
+      const params = structuredClone(values)
       params['testimonial_ids'] = ids
 
       try {
-        this.testimonials = await fetchWrapper.put(`${API_URL}/projects/${projectSlug}/testimonials`, params);
+        await fetchWrapper.put(`${API_URL}/projects/${projectSlug}/testimonials`, params);
+
+        // Update state
+        this.testimonials = this.testimonials.map((item) => {
+          if (ids.includes(item.id)) {
+            Object.keys(values).forEach((key) => {
+              item[key] = values[key];
+            });
+          }
+          return item
+        });
         alertStore.success("Отзывы обновлены");
       } catch (error) {
         // Handle errors
