@@ -73,6 +73,21 @@ export const useTestimonialStore = defineStore({
       }
     },
 
+    // Create new testimonial
+    async create(projectSlug, values) {
+      const alertStore = useAlertStore();
+
+      try {
+        const testimonial = await fetchWrapper.post(`${API_URL}/projects/${projectSlug}/testimonials/`, values);
+        this.testimonials.push(testimonial);
+
+        alertStore.success("Отзыв добавлен");
+      } catch (error) {
+        // Handle errors
+        alertStore.error(error);
+      }
+    },
+
     // Update an existing testimonial
     async update(id, params) {
       const alertStore = useAlertStore();

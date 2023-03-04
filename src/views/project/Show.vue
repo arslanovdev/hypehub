@@ -6,12 +6,16 @@ import ProjectSettingDropdown from "@/components/ProjectSettingDropdown.vue";
 import {useProjectStore, useTestimonialStore} from "@/stores/index.js";
 import { storeToRefs } from "pinia";
 import TestimonialList from "@/components/TestimonialList.vue";
+import CreateTestimonialModal from "@/components/CreateTestimonialModal.vue"
+import {ref} from "vue";
 
 const projectStore = useProjectStore();
 const { project } = storeToRefs(projectStore);
 
 const testimonialStore = useTestimonialStore();
 const { testimonials } = storeToRefs(testimonialStore);
+
+const isShowCreateModal = ref(false);
 </script>
 
 <template>
@@ -48,6 +52,7 @@ const { testimonials } = storeToRefs(testimonialStore);
     <Button
       class="mr-2"
       color="alternative"
+      @click="isShowCreateModal = true"
     >
       Добавить вручную
     </Button>
@@ -70,4 +75,11 @@ const { testimonials } = storeToRefs(testimonialStore);
     </p>
   </div>
   <TestimonialList v-else />
+
+  <Teleport to="body">
+    <CreateTestimonialModal
+      v-if="isShowCreateModal"
+      @on-close-modal="isShowCreateModal = false"
+    />
+  </Teleport>
 </template>
