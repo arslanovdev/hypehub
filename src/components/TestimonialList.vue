@@ -32,6 +32,7 @@ const deleteTestimonial = () => {
     testimonialStore.delete(selectedTestimonial.value.id);
   } else {
     testimonialStore.deleteAll(projectSlug, selectedTestimonialIds.value);
+    selectedTestimonialIds.value = []
   }
 };
 const closeDeleteModal = () => {
