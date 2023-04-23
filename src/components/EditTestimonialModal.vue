@@ -4,6 +4,9 @@ import {Form, Field} from "vee-validate";
 import {ref} from "vue";
 import * as Yup from "yup";
 import {useAlertStore, useTestimonialStore} from "@/stores/index.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import {useDark} from "@vueuse/core";
 
 const props = defineProps({
   testimonial: {
@@ -11,6 +14,9 @@ const props = defineProps({
     required: true
   }
 });
+
+const isDark = useDark();
+const created_at = ref();
 
 const emit = defineEmits({
   onCloseModal: null,
@@ -39,7 +45,10 @@ const schema = Yup.object().shape({
   text: Yup.string()
       .required("Текст отзыва обязателен")
       .max(500, "Текст отзыва должен быть не длинее 500 символов"),
-  is_verified: Yup.bool()
+  is_verified: Yup.bool(),
+  created_at: Yup.date()
+      .nullable()
+      .required("Дата обязательна")
 });
 
 async function onSubmit(values) {
@@ -143,6 +152,36 @@ async function onSubmit(values) {
               {{ errors.text }}
             </p>
           </div>
+
+          <div class="sm:col-span-2">
+            <VueDatePicker
+              v-model="created_at"
+              :input-class-name="errors.created_at ? failedValidationClasses : ''"
+              :dark="isDark"
+              locale="ru-RU"
+              select-text="Выбрать"
+              cancel-text="Отмена"
+              now-button-label="Сейчас"
+              placeholder="Выберите дату"
+            />
+
+            <Field
+              id="created_at"
+              v-model="created_at"
+              type="date"
+              name="created_at"
+              class="hidden"
+              rules="required"
+            />
+
+            <p
+              v-if="errors.created_at"
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              {{ errors.created_at }}
+            </p>
+          </div>
+
           <div class="flex sm:col-span-2">
             <div class="flex items-center h-5">
               <Field
